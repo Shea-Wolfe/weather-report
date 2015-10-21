@@ -1,5 +1,5 @@
 import requests_mock
-from current_conditions import GetConditions, GetTenDay, GetHurricane
+from current_conditions import GetConditions, GetTenDay, GetHurricane, GetSunrise
 import os
 
 my_secret_key = os.environ['WUNDKEY']
@@ -39,3 +39,13 @@ def test_hurricane(m):
     res = hurricane.run()
 
     assert res == 'Hurricane 1 is named Hurricane Olaf and is located at lattitude 9.9 and longitude -137.7'
+
+
+@requests_mock.Mocker()
+def test_sunrise(m):
+    with open('sunrise.json') as f:
+        m.get('http://api.wunderground.com/api/{}/astronomy/27703.json'.format(my_secret_key), text=f.read())
+    sunrise = GetSunrise(27703)
+    res = sunrise.run()
+
+    assert res == 'The sun rose at 7:26 and will set at 18:33'

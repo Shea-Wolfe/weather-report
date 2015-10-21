@@ -42,7 +42,12 @@ class GetTenDay:
         all_days = ['{} will be {}'.format(days[x],conditions[x]) for x in range(10)]
         return '\n'.join(all_days)
 
-class
+class GetSunrise:
+    def __init__(self, zipcode):
+        self.zipcode = zipcode
+
+    def run(self):
+        pass
 
 def main():
     call = GetTenDay(27703)
