@@ -17,14 +17,14 @@ class GetConditions:
         return 'It is {} outside and is {} degrees but feels like {} with wind chill'.format(weather,current_temp,feels_like)
 
 class GetHurricane:
-    def run(self):
+    def run():
         url = 'http://api.wunderground.com/api/{}/currenthurricane/view.json'.format(my_secret_key)
         res = requests.get(url).json()
 
-        hurricane_count = res['response']['features']['currenthurricane']
-        hurricane_names = [res['currenthurricane'][x]['stormInfo']['stormName_Nice'] for x in range(hurricane_count)]
-        hurricane_locations = [(res['currenthurricane'][x]['Current']['lat'], res['currenthurricane'][x]['Current']['lon']) for x in range(hurricane_count)]
-        all_hurricanes =  ['Hurricane {} is named {} and is located at lattitude {} and longitude {}'.format(x+1,hurricane_names[x],hurricane_locations[x][0],hurricane_locations[x][1]) for x in range(hurricane_count)]
+        hurricane_count = len(res['currenthurricane'])
+        hurricane_names = [res['currenthurricane'][x]['stormInfo']['stormName_Nice'] for x in range(hurricane_count) if res['currenthurricane'][x]['Current']['Category'] == 'Hurricane']
+        hurricane_locations = [(res['currenthurricane'][x]['Current']['lat'], res['currenthurricane'][x]['Current']['lon']) for x in range(hurricane_count) if res['currenthurricane'][x]['Current']['Category'] == 'Hurricane']
+        all_hurricanes =  ['Hurricane {} is named {} and is located at lattitude {} and longitude {}'.format(x+1,hurricane_names[x],hurricane_locations[x][0],hurricane_locations[x][1]) for x in range(hurricane_count) if res['currenthurricane'][x]['Current']['Category'] == 'Hurricane']
         return '\n'.join(all_hurricanes)
 
 
