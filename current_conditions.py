@@ -47,10 +47,16 @@ class GetSunrise:
         self.zipcode = zipcode
 
     def run(self):
-        pass
+        url = 'http://api.wunderground.com/api/{}/astronomy/q/{}.json'.format(my_secret_key, self.zipcode)
+        res = requests.get(url).json()
+
+        sunrise = '{}:{}'.format(res['sun_phase']['sunrise']['hour'],res['sun_phase']['sunrise']['minute'])
+        sunset = '{}:{}'.format(res['sun_phase']['sunset']['hour'],res['sun_phase']['sunset']['minute'])
+
+        return 'The sun rose at {} and will set at {}'.format(sunrise,sunset)
 
 def main():
-    call = GetTenDay(27703)
+    call = GetSunrise(27703)
     res = call.run()
     print(res)
 
