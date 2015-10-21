@@ -1,5 +1,5 @@
 import requests_mock
-from current_conditions import GetConditions, GetTenDay, GetHurricane, GetSunrise
+from current_conditions import GetConditions, GetTenDay, GetHurricane, GetSunrise, GetAlerts
 import os
 
 my_secret_key = os.environ['WUNDKEY']
@@ -44,8 +44,17 @@ def test_hurricane(m):
 @requests_mock.Mocker()
 def test_sunrise(m):
     with open('sunrise.json') as f:
-        m.get('http://api.wunderground.com/api/{}/astronomy/27703.json'.format(my_secret_key), text=f.read())
+        m.get('http://api.wunderground.com/api/{}/astronomy/q/27703.json'.format(my_secret_key), text=f.read())
     sunrise = GetSunrise(27703)
     res = sunrise.run()
 
     assert res == 'The sun rose at 7:26 and will set at 18:33'
+
+@requests_mock.Mocker()
+def test_alerts(m):
+    with open('alerts.json') as f:
+        m.get('http://api.wunderground.com/api/{}/alerts/q/27703.json'.format(my_secret_key), text=f.read())
+    alerts = GetAlerts(27703)
+    res = alerts.run()
+
+    assert res == 'No Alerts'

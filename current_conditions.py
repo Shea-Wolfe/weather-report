@@ -55,6 +55,13 @@ class GetSunrise:
 
         return 'The sun rose at {} and will set at {}'.format(sunrise,sunset)
 
+class GetAlerts:
+    def __init__(self, zipcode):
+        self.zipcode = zipcode
+
+    def run(self):
+        pass
+
 def main():
     call = GetSunrise(27703)
     res = call.run()
