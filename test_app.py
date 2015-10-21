@@ -1,5 +1,5 @@
 import requests_mock
-from current_conditions import GetConditions, GetTenDay, GetHurricane, GetSunrise, GetAlerts
+from weather_class import GetConditions, GetTenDay, GetHurricane, GetSunrise, GetAlerts
 import os
 
 my_secret_key = os.environ['WUNDKEY']

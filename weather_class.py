@@ -25,7 +25,7 @@ class GetHurricane:
         hurricane_names = [res['currenthurricane'][x]['stormInfo']['stormName_Nice'] for x in range(hurricane_count)]
         hurricane_locations = [(res['currenthurricane'][x]['Current']['lat'], res['currenthurricane'][x]['Current']['lon']) for x in range(hurricane_count)]
         all_hurricanes =  ['Hurricane {} is named {} and is located at lattitude {} and longitude {}'.format(x+1,hurricane_names[x],hurricane_locations[x][0],hurricane_locations[x][1]) for x in range(hurricane_count)]
-        return ' '.join(all_hurricanes)
+        return '\n'.join(all_hurricanes)
 
 
 
@@ -60,7 +60,15 @@ class GetAlerts:
         self.zipcode = zipcode
 
     def run(self):
-        pass
+        url = 'http://api.wunderground.com/api/{}/alerts/q/{}.json'.format(my_secret_key,self.zipcode)
+        res = requests.get(url).json()
+
+        if res['alerts']:
+            alert_message = alert_type = [res['alerts'][x]['message'] for x in range(len(res['alerts']))]
+            return '\n'.join(alert_message)
+        else:
+            return 'No Alerts'
+
 
 def main():
     call = GetSunrise(27703)
