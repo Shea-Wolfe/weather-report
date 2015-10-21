@@ -1,0 +1,46 @@
+import requests
+import os
+my_secret_key = os.environ['WUNDKEY']
+
+
+class GetConditions:
+    def __init__(self, zipcode):
+        self.zipcode = zipcode
+
+    def run(self):
+        url = 'http://api.wunderground.com/api/{}/conditions/q/{}.json'.format(my_secret_key,self.zipcode)
+        res = requests.get(url).json()
+
+        current_temp = res["current_observation"]["temp_f"]
+        weather = res['current_observation']['weather']
+        feels_like = res['current_observation']['feelslike_f']
+        return 'It is {} outside and is {} degrees but feels like {} with wind chill'.format(weather,current_temp,feels_like)
+
+class GetHurricane:
+    def run(self):
+        url = 'http://api.wunderground.com/api/{}/currenthurricane/view.json'.format(my_secret_key)
+        res = requests.get(url).json()
+
+        hurricane_count = res['response']['features']['currenthurricane']
+        hurricane_names = [res['currenthurricane'][x]['stormInfo']['stormName_Nice'] for x in range(hurricane_count)]
+        hurricane_locations = [(res['currenthurricane'][x]['Current']['lat'], res['currenthurricane'][x]['Current']['lon']) for x in range(hurricane_count)]
+        all_hurricanes =  ['Hurricane {} is named {} and is located at lattitude {} and longitude {}'.format(x+1,hurricane_names[x],hurricane_locations[x][0],hurricane_locations[x][1]) for x in range(hurricane_count)]
+        return ' '.join(all_hurricanes)
+
+
+
+class GetTenDay:
+    def __init__(self, zipcode):
+        self.zipcode = zipcode
+
+    def run(self):
+        pass
+
+def main():
+    call = GetConditions(27703)
+    res = call.run()
+    print(res)
+
+
+if __name__ == '__main__':
+    main()

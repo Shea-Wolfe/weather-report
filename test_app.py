@@ -1,7 +1,5 @@
 import requests_mock
-from current_conditions import GetConditions
-from ten_day import GetTenDay
-from hurricane import GetHurricane
+from current_conditions import GetConditions, GetTenDay, GetHurricane
 import os
 
 my_secret_key = os.environ['WUNDKEY']
@@ -13,7 +11,7 @@ def test_get_conditions(m):
     conditions = GetConditions(27703)
     res = conditions.run()
 
-    assert res == 'current conditions'
+    assert res == 'It is Clear outside and is 55.3 degrees but feels like 55.3 with wind chill'
 
 @requests_mock.Mocker()
 def test_get_10day(m):
@@ -27,8 +25,8 @@ def test_get_10day(m):
 @requests_mock.Mocker()
 def test_hurricane(m):
     with open('hurricane.json') as f:
-        m.get('http://api.wunderground.com/api/{}/hurricane/view.json'.format(my_secret_key), text=f.read())
+        m.get('http://api.wunderground.com/api/{}/currenthurricane/view.json'.format(my_secret_key), text=f.read())
     hurricane = GetHurricane()
     res = hurricane.run()
 
-    assert res == 'hurricane stuff'
+    assert res == 'Hurricane 1 is named Hurricane Olaf and is located at lattitude 9.9 and longitude -137.7'
