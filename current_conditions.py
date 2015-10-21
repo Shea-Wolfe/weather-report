@@ -34,10 +34,18 @@ class GetTenDay:
         self.zipcode = zipcode
 
     def run(self):
-        pass
+        url = 'http://api.wunderground.com/api/{}/forecast10day/q/{}.json'.format(my_secret_key,self.zipcode)
+        res = requests.get(url).json()
+
+        days = [res['forecast']['txt_forecast']['forecastday'][x*2]['title'] for x in range(10)]
+        conditions = [res['forecast']['txt_forecast']['forecastday'][x*2]['fcttext'] for x in range(10)]
+        all_days = ['{} will be {}'.format(days[x],conditions[x]) for x in range(10)]
+        return '\n'.join(all_days)
+
+class
 
 def main():
-    call = GetConditions(27703)
+    call = GetTenDay(27703)
     res = call.run()
     print(res)
 

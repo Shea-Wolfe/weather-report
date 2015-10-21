@@ -20,7 +20,16 @@ def test_get_10day(m):
     tenday = GetTenDay(27703)
     res = tenday.run()
 
-    assert res == 'tenday stuff'
+    assert res == '''Tuesday will be Mainly clear. Lows overnight in the upper 30s.
+Wednesday will be Plentiful sunshine. High 72F. Winds light and variable.
+Thursday will be Sunshine. High around 75F. Winds light and variable.
+Friday will be Sunny. High 76F. Winds NNE at 5 to 10 mph.
+Saturday will be Cloudy. High 67F. Winds light and variable.
+Sunday will be Partly cloudy skies during the morning hours will become overcast in the afternoon. High 73F. Winds SW at 5 to 10 mph.
+Monday will be Sunshine and clouds mixed. High 66F. Winds NNE at 5 to 10 mph.
+Tuesday will be Except for a few afternoon clouds, mainly sunny. High 59F. Winds NE at 10 to 15 mph.
+Wednesday will be Cloudy with showers. High around 60F. Winds NE at 5 to 10 mph. Chance of rain 60%.
+Thursday will be Rain showers in the morning becoming more intermittent in the afternoon. High near 60F. Winds NNE at 5 to 10 mph. Chance of rain 60%.'''
 
 @requests_mock.Mocker()
 def test_hurricane(m):
